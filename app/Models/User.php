@@ -20,7 +20,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'passport',
+        'phone',
+        'nationality'
+
     ];
 
     /**
@@ -42,4 +45,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function bookings()
+    {
+        return $this->hasMany(FlightBooking::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    // Get All Favorites :
+    public function allFavorites()
+    {
+        return $this->favorites()->with('favoritable')->get();
+    }
+
+
+    public function favoriteHotels()
+    {
+        return $this->favorites()->where('favoritable_type', \App\Models\Hotel::class);
+    }
+    public function favoriteRestaurant()
+    {
+        return $this->favorites()->where('favoritable_type', \App\Models\Restaurant::class);
+    }
+    public function favoriteTouristPlace()
+    {
+        return $this->favorites()->where('favoritable_type', \App\Models\TouristPlace::class);
+    }
 }

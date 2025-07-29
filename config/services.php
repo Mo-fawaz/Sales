@@ -30,5 +30,15 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'amadeus' => [
+        'key'       => env('AMADEUS_API_KEY'),
+        'secret'    => env('AMADEUS_API_SECRET'),
+        'base_url'  => env('AMADEUS_BASE_URL'),
+    ],
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
+
 
 ];
