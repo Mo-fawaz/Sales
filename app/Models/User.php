@@ -10,13 +10,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'first_name',
@@ -28,13 +27,16 @@ class User extends Authenticatable
         'otp',
         'otp_expires_at',
         'is_verified',
-        'change_password'
+        'change_password',
+        'passport',
+        'nationality'
+
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -42,15 +44,42 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function bookings()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(FlightBooking::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    // Get All Favorites :
+    public function allFavorites()
+    {
+        return $this->favorites()->with('favoritable')->get();
+    }
+
+
+    public function favoriteHotels()
+    {
+        return $this->favorites()->where('favoritable_type', \App\Models\Hotel::class);
+    }
+    public function favoriteRestaurant()
+    {
+        return $this->favorites()->where('favoritable_type', \App\Models\Restaurant::class);
+    }
+    public function favoriteTouristPlace()
+    {
+        return $this->favorites()->where('favoritable_type', \App\Models\TouristPlace::class);
     }
 }
