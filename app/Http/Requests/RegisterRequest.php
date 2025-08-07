@@ -28,6 +28,8 @@ class RegisterRequest extends FormRequest
             'password' => 'required|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|confirmed',
             'password_confirmation' => 'required|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
             'phone' => 'required|string|max:255|unique:users',
+            'passport' => 'nullable|string|max:255',
+            'nationality' => 'nullable|string|max:255',
         ];
     }
 }

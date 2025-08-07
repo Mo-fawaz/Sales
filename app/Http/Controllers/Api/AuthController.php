@@ -34,6 +34,8 @@ class AuthController extends Controller
                     'password'   => Hash::make($data['password']),
                     'otp'             => $otp,
                     'otp_expires_at'  => Carbon::now()->addMinutes(10),
+                    'passport'       => $data['passport'] ?? null,
+                    'nationality'    => $data['nationality'] ?? null,
                 ]);
             $token = $user->createToken('api_token')->plainTextToken;
             Mail::to($user->email)->send(new SendOtpMail($otp));
@@ -78,7 +80,7 @@ class AuthController extends Controller
                 'otp_expires_at'  => null,
             ]);
 
-            $token = $user->createToken('api_token')->plainTextToken;
+            $token = $request->bearerToken();
 
             return response()->json([
                 'message' => 'Account verified successfully',
@@ -104,6 +106,7 @@ class AuthController extends Controller
             'change_password' => true
         ]);
         Mail::to($user->email)->send(new SendOtpMail($otp));
+        $user->tokens()->delete();
         $token = $user->createToken('api_token')->plainTextToken;
         return response()->json([
             'message' => 'OTP sent to your email.',
@@ -160,11 +163,12 @@ class AuthController extends Controller
             return response()->json(['message' => 'OTP expired'], 400);
         }
         $user->update([
-            'password'        => Hash::make($request->new_password),
+            'password'        => Hash::make($request->password),
             'otp'             => null,
             'otp_expires_at'  => null,
             'change_password' => false,
         ]);
+        $user->tokens()->delete();
         return response()->json(['message' => 'Password reset successful']);
     }
     public function login(Request $request)
@@ -174,7 +178,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-  
+
         $login = $request->login;
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
         $user = User::where($fieldType, $login)->first();
