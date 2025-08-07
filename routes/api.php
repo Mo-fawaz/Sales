@@ -13,7 +13,8 @@ use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\StripeController;
 use App\Models\FlightBooking;
 use App\Http\Controllers\Api\AuthController;
-
+use App\Http\Controllers\Api\HousesController;
+use App\Http\Controllers\API\UserController as APIUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +45,7 @@ Route::post('/reset-password', [AuthController::class, 'verifyResetOtp'])->middl
 Route::post('/login', [AuthController::class, 'login']);
 
 
-Route::post('/users', [UserController::class, 'store']);
+Route::post('/users', [UserController::class, 'create']);
 Route::get('/flights', [FlightController::class, 'index']);
 Route::post('/flights', [FlightController::class, 'store']);
 Route::post('/bookings', [FlightBookingController::class, 'store']);
@@ -110,3 +111,19 @@ Route::prefix('favorites')->controller(FavoriteController::class)->group(functio
 
 Route::get('stripe', [StripeController::class, 'index']);
 Route::post('stripe/create-charge', [StripeController::class, 'createCharge'])->name('stripe.create-charge');
+
+
+Route::prefix('Houses')->group(function(){
+    Route::get("/index",[HousesController::class,'index']);
+    Route::get("/show/{id}",[HousesController::class,'show']);
+    Route::post("/create",[HousesController::class,'create']);
+    Route::post("/update/{id}",[HousesController::class,'update']);
+    Route::post("/destroy/{id}",[HousesController::class,'destroy']);
+});
+Route::prefix('user')->group(function(){
+   Route::get('/index',[UserController::class,'index']);
+   Route::get('/show/{id}',[UserController::class,'show']);
+   Route::post('/create',[UserController::class,'create']);
+   Route::post('/update/{id}',[UserController::class,'update']);
+   Route::post('/destroy/{id}',[UserController::class,'destroy']);
+});
