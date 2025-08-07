@@ -14,7 +14,7 @@ use App\Http\Controllers\StripeController;
 use App\Models\FlightBooking;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HousesController;
-use App\Http\Controllers\API\UserController as APIUserController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
