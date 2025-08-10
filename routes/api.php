@@ -13,7 +13,8 @@ use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\StripeController;
 use App\Models\FlightBooking;
 use App\Http\Controllers\Api\AuthController;
-
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -110,3 +111,11 @@ Route::prefix('favorites')->controller(FavoriteController::class)->group(functio
 
 Route::get('stripe', [StripeController::class, 'index']);
 Route::post('stripe/create-charge', [StripeController::class, 'createCharge'])->name('stripe.create-charge');
+
+
+//  Booking Routes
+Route::get('/bookings',[BookingController::class,'index']);
+Route::post('/bookings',[BookingController::class,'store']);
+Route::post('/bookings/[id]/destroy',[BookingController::class,'destroy']);
+
+
