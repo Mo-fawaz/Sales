@@ -13,8 +13,8 @@ use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\StripeController;
 use App\Models\FlightBooking;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HousesBookingController;
 use App\Http\Controllers\Api\HousesController;
-use App\Http\Controllers\API\UserController as APIUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -119,6 +119,13 @@ Route::prefix('Houses')->group(function(){
     Route::post("/create",[HousesController::class,'create']);
     Route::post("/update/{id}",[HousesController::class,'update']);
     Route::post("/destroy/{id}",[HousesController::class,'destroy']);
+});
+Route::prefix('housesbooking')->group(function(){
+    Route::get("/index",[HousesBookingController::class,'index']);
+    Route::get("/show/{id}",[HousesBookingController::class,'show']);
+    Route::post("/store",[HousesBookingController::class,'store']);
+    Route::post("/update/{id}",[HousesBookingController::class,'update']);
+    Route::post("/destroy/{id}",[HousesBookingController::class,'destroy']);
 });
 Route::prefix('user')->group(function(){
    Route::get('/index',[UserController::class,'index']);
