@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,17 +22,38 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    protected $model = User::class;
+
+    public function definition()
     {
+        $faker = \Faker\Factory::create('ar_SA'); // استخدام الإصدار العربي
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'first_name' => $faker->firstName('male'|'female'),
+            'last_name' => $faker->lastName(),
+            'phone' => $this->generateSaudiPhoneNumber(),
+            'email' => $faker->unique()->safeEmail(),
+            'password' => bcrypt('كلمةالسر'), // كلمة سر افتراضية
+            'passport' => $this->generateArabicPassportNumber(),
+            'nationality' => 'SA', // رمز السعودية
             'remember_token' => Str::random(10),
+            'email_verified_at' => now(),
         ];
+
     }
 
+    protected function generateSaudiPhoneNumber(): string
+    {
+        return '9665' . $this->faker->numerify('#######'); // مثال: 966512345678
+    }
+
+    protected function generateArabicPassportNumber(): string
+    {
+        return 'P' . $this->faker->numerify('######'); // مثال: P123456
+    }
+
+    // Optionally add state methods for specific cases
+    
     /**
      * Indicate that the model's email address should be unverified.
      */

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('houses_booking', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // الزبون يلي حجز
-            $table->foreignId('house_id')->constrained()->onDelete('cascade'); // البيت المحجوز
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on("users")->onDelete('cascade');
+            $table->unsignedBigInteger('house_id');
+            $table->foreign('house_id')->references('id')->on("houses")->onDelete('cascade');
             $table->date('start_date'); // تاريخ بدء الحجز
             $table->date('end_date');   // تاريخ نهاية الحجز
             $table->decimal('total_price', 8, 2); // السعر الكلي
