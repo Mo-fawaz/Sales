@@ -14,16 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CitiesTableSeeder::class);
 
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $this->call([
-        HousesTableSeeder::class,
-        UserTableSeeder::class,
+            UserTableSeeder::class,
+            HousesTableSeeder::class,
         ]);
     }
-    
 }

@@ -110,8 +110,14 @@ class AmadeusFlightService
     // For Check Pricing before Confirm booking :
     public function priceFlightOffer(array $flightOffer)
     {
-        $url = 'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing';
+        if (!$flightOffer) {
+            return [
+                'success' => false,
+                'error' => 'No flight offer provided'
+            ];
+        }
 
+        $url = 'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing';
         $response = Http::withToken($this->accessToken)
             ->post($url, [
                 'data' => [
@@ -132,6 +138,7 @@ class AmadeusFlightService
             'priced_offer' => $response->json()
         ];
     }
+
 
     // Confirm Booking :
     public function createFlightOrder(array $flightOffer, array $travelers, array $payments)
