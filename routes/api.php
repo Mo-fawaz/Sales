@@ -1,19 +1,21 @@
 <?php
 
 use App\Http\Controllers\Api\AccommodationController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\CarsReviewController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\FlightBookingController;
 use App\Http\Controllers\Api\FlightController;
 use App\Http\Controllers\Api\FlightPassengerController;
 use App\Http\Controllers\Api\HotelController;
+use App\Http\Controllers\Api\RentalController;
 use App\Http\Controllers\Api\RestaurantController;
+use App\Http\Controllers\Api\TaxiRequestController;
 use App\Http\Controllers\Api\TouristPlaceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\StripeController;
-use App\Models\FlightBooking;
-use App\Http\Controllers\Api\AuthController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -110,3 +112,38 @@ Route::prefix('favorites')->controller(FavoriteController::class)->group(functio
 
 Route::get('stripe', [StripeController::class, 'index']);
 Route::post('stripe/create-charge', [StripeController::class, 'createCharge'])->name('stripe.create-charge');
+
+    Route::get('cars/{car}', [CarController::class, 'show']);
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::get('cars', [CarController::class, 'index']);
+
+        Route::post('cars', [CarController::class, 'store']);
+        Route::put('cars/{car}', [CarController::class, 'update']);
+        Route::delete('cars/{car}', [CarController::class, 'destroy']);
+        Route::delete('cars/{car}/images/{image}', [CarController::class,'deleteImage']);
+        Route::post('cars/{car}/approve', [CarController::class,'approve']);
+            // تقديم و إدارة طلبات الإيجار
+            Route::post('cars/{car}/rentals', [RentalController::class, 'store']);
+            Route::post('rentals/{rental}/accept', [RentalController::class, 'accept']);
+            Route::post('rentals/{rental}/reject', [RentalController::class, 'reject']);
+            Route::post('rentals/{rental}/cancel', [RentalController::class, 'cancel']);
+
+            // عرض الطلبات
+            Route::get('rentals/my', [RentalController::class, 'myRentals']);       // المستأجر
+            Route::get('rentals/owner', [RentalController::class, 'ownerRentals']); // صاحب السيارة
+            Route::get('rentals/all', [RentalController::class, 'allRentals']);     // الأدمن
+
+        // Taxi
+        Route::get('taxi-requests', [TaxiRequestController::class,'index']); // عرض الطلبات
+        Route::post('taxi-requests', [TaxiRequestController::class,'store']); // إنشاء طلب
+        Route::post('taxi-requests/{taxiRequest}/accept', [TaxiRequestController::class,'accept']);
+        Route::post('taxi-requests/{taxiRequest}/reject', [TaxiRequestController::class,'reject']);
+        Route::post('taxi-requests/{taxiRequest}/cancel', [TaxiRequestController::class,'cancel']);
+
+            Route::post('reviews', [CarsReviewController::class, 'store']);
+            Route::put('reviews/{review}', [CarsReviewController::class, 'update']);
+            Route::delete('reviews/{review}', [CarsReviewController::class, 'destroy']);
+
+
+    });
+        Route::get('cars/{car}/reviews', [CarsReviewController::class, 'index']);
