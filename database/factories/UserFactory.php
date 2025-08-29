@@ -7,29 +7,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
+
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
     protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
     protected $model = User::class;
 
     public function definition()
     {
-        $faker = \Faker\Factory::create('ar_SA'); // استخدام الإصدار العربي
-
+        $faker = \Faker\Factory::create('ar_SA');
         return [
-            'first_name' => $faker->firstName('male'|'female'),
+            'first_name' => $faker->firstName($faker->randomElement(['male', 'female'])),
             'last_name' => $faker->lastName(),
             'phone' => $this->generateSaudiPhoneNumber(),
             'email' => $faker->unique()->safeEmail(),
@@ -39,9 +29,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'email_verified_at' => now(),
         ];
-
     }
-
     protected function generateSaudiPhoneNumber(): string
     {
         return '9665' . $this->faker->numerify('#######'); // مثال: 966512345678
@@ -52,14 +40,9 @@ class UserFactory extends Factory
         return 'P' . $this->faker->numerify('######'); // مثال: P123456
     }
 
-    // Optionally add state methods for specific cases
-    
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
