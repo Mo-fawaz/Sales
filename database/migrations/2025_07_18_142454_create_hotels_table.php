@@ -19,7 +19,12 @@ return new class extends Migration
             $table->string('location');
             $table->text('description')->nullable();
             $table->string('phone')->nullable();
+            $table->string('email');
+            $table->decimal('price_per_night', 10, 2)->nullable()->default(123.45);
+            $table->json('images')->nullable();
+            $table->boolean('is_avalible')->default(true);
             $table->unsignedTinyInteger('stars')->default(3); // From 1 to 5
+            $table->json('amenities')->nullable();
             $table->timestamps();
         });
     }
