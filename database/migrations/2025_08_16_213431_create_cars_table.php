@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('model');
             $table->year('year')->nullable();
             $table->enum('pricing_type', ['per_day','per_hour','per_km'])->default('per_day');
-            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('price_', 10, 2)->default(0);
             $table->string('city');
             $table->string('location');
-            $table->boolean('is_private')->default(true);
-            $table->boolean('is_taxi')->default(false);
+         //   $table->boolean('is_private')->default(true);
+         //   $table->boolean('is_taxi')->default(false);
             $table->string('type')->nullable(); // Sedan, SUV, Van...
             $table->enum('status',['pending','approved','rejected'])->default('pending');
             $table->timestamps();

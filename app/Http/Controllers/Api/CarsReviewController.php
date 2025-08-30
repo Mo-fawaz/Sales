@@ -11,7 +11,7 @@ class CarsReviewController extends Controller
 {
     public function index($carId)
 {
-    $reviews = Review::where('car_id', $carId)
+    $reviews = CarsReview::where('car_id', $carId)
         ->with('user:id,name')
         ->latest()
         ->paginate(10);

@@ -42,7 +42,7 @@ class RentalController extends Controller
 
         $rental = Rental::create([
             'car_id'          => $car->id,
-            'renter_id'       => auth()->id(),
+            'renter_id'       => auth('sanctum')->id(),
             'start_date'      => $data['start_date'] ?? null,
             'end_date'        => $data['end_date'] ?? null,
             'pickup_location' => $data['pickup_location'] ?? null,

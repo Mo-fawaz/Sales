@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('car_id')->constrained()->onDelete('cascade');
             $table->foreignId('renter_id')->constrained('users')->onDelete('cascade');
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('end_date')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->string('pickup_location')->nullable(); // نقطة الاستلام
             $table->enum('status',['pending','accepted','rejected','cancelled'])->default('pending');
             $table->decimal('estimated_price', 10, 2)->default(0);
