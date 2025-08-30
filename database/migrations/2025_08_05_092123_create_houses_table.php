@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('title'); // اسم البيت
             $table->text('description')->nullable(); // وصف
             $table->string('location'); // الموقع
-            $table->json('image');
             $table->decimal('price_per_night', 8, 2); // السعر لليلة
             $table->integer('max_guests')->default(1); // عدد الضيوف المسموح
             $table->json('amenities')->nullable(); // الخدمات (تلفزيون، واي فاي...)

@@ -20,13 +20,14 @@ class Houses extends Model
     'amenities' => 'array', // يحول JSON من/إلى array تلقائيًا
     ];
     use HasFactory; 
-    public function images()
-    {
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
+    
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(HouseImage::class);
     }
 }

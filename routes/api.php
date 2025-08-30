@@ -134,8 +134,8 @@ Route::prefix('Houses')->group(function(){
     Route::post("/create",[HousesController::class,'create']);
     Route::post("/update/{id}",[HousesController::class,'update']);
     Route::post("/destroy/{id}",[HousesController::class,'destroy']);
-
-Route::prefix('Houses')->group(function () {
+});
+Route::prefix('houses')->group(function () {
     Route::get("/index", [HousesController::class, 'index']);
     Route::get("/show/{id}", [HousesController::class, 'show']);
     Route::post("/create", [HousesController::class, 'create']);

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\HousesResource;
 use App\Models\Houses;
+
+use App\Models\HousesImages;
 use Illuminate\Support\Facades\Validator;
 
 class HousesController extends Controller
@@ -34,6 +36,7 @@ class HousesController extends Controller
         'location' => 'required|string',
         'price_per_night' => 'required|numeric',
         'amenities' => 'required|json',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
     if ($validatedData->fails()) {
@@ -62,8 +65,7 @@ class HousesController extends Controller
             'message' => 'هذا البيت موجود مسبقًا بنفس المواصفات'
         ], 409);
     }
-
-    // إنشاء البيت
+    
     $house = Houses::create([
         'user_id' => $request->user_id,
         'title' => $request->title,
@@ -72,6 +74,22 @@ class HousesController extends Controller
         'price_per_night' => $request->price_per_night,
         'amenities' => json_encode($incomingAmenities), // حفظها بشكل مرتب
     ]);
+        if ($request->hasFile('image')) {
+        $images = $request->file('image');
+
+        // إذا كانت صورة وحدة، حولها لمصفوفة
+        if (!is_array($images)) {
+            $images = [$images];
+        }
+
+        foreach ($images as $img) {
+            $path1 = $img->store('houses', 'public');
+            HousesImages::create([
+                'house_id' => $house->id,
+                'path' => $path1
+            ]);
+        }
+    } 
 
     return response()->json([
         'message' => 'تم إنشاء البيت بنجاح',
