@@ -16,6 +16,12 @@ use App\Http\Controllers\Api\TouristPlaceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\StripeController;
+use App\Models\FlightBooking;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\HousesBookingController;
+use App\Http\Controllers\Api\HousesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +52,7 @@ Route::post('/reset-password', [AuthController::class, 'verifyResetOtp'])->middl
 Route::post('/login', [AuthController::class, 'login']);
 
 
-Route::post('/users', [UserController::class, 'store']);
+Route::post('/users', [UserController::class, 'create']);
 Route::get('/flights', [FlightController::class, 'index']);
 Route::post('/flights', [FlightController::class, 'store']);
 Route::post('/bookings', [FlightBookingController::class, 'store']);
@@ -59,10 +65,13 @@ Route::get('/vehicles/search', [VehicleController::class, 'search']);
 
 // with API :
 Route::get('/flights/search', [\App\Http\Controllers\Api\FlightController::class, 'search']);
+Route::post('/flights/details', [FlightController::class, 'getFlightDetails']);
+//Route::get('/flights/{searchId}/offers/{offerId}', [FlightController::class, 'getFlightDetails']);
+
 Route::post('/flights/search-week', [FlightController::class, 'searchFlightsWithinWeek']);
 Route::post('/book', [FlightPassengerController::class, 'storePassengers']);
 Route::post('/temp-booking', [FlightBookingController::class, 'store']);
-//
+
 Route::post('bookings/{id}/confirm', [FlightBookingController::class, 'confirm']);
 Route::post('bookings/{id}/cancel', [FlightBookingController::class, 'cancel']);
 
@@ -112,11 +121,10 @@ Route::prefix('favorites')->controller(FavoriteController::class)->group(functio
 
 Route::get('stripe', [StripeController::class, 'index']);
 Route::post('stripe/create-charge', [StripeController::class, 'createCharge'])->name('stripe.create-charge');
-
     Route::get('cars/{car}', [CarController::class, 'show']);
+Route::get('cars', [CarController::class, 'index']);
     Route::middleware('auth:sanctum')->group(function () {
     Route::get('cars', [CarController::class, 'index']);
-
         Route::post('cars', [CarController::class, 'store']);
         Route::put('cars/{car}', [CarController::class, 'update']);
         Route::delete('cars/{car}', [CarController::class, 'destroy']);
@@ -147,3 +155,49 @@ Route::post('stripe/create-charge', [StripeController::class, 'createCharge'])->
 
     });
         Route::get('cars/{car}/reviews', [CarsReviewController::class, 'index']);
+
+
+//  Booking Routes
+Route::get('/bookings',[BookingController::class,'index']);
+Route::post('/bookings',[BookingController::class,'store']);
+Route::post('/bookings/[id]/destroy',[BookingController::class,'destroy']);
+
+
+
+Route::prefix('Houses')->group(function(){
+    Route::get("/index",[HousesController::class,'index']);
+    Route::get("/show/{id}",[HousesController::class,'show']);
+    Route::post("/create",[HousesController::class,'create']);
+    Route::post("/update/{id}",[HousesController::class,'update']);
+    Route::post("/destroy/{id}",[HousesController::class,'destroy']);
+
+Route::prefix('Houses')->group(function () {
+    Route::get("/index", [HousesController::class, 'index']);
+    Route::get("/show/{id}", [HousesController::class, 'show']);
+    Route::post("/create", [HousesController::class, 'create']);
+    Route::post("/update/{id}", [HousesController::class, 'update']);
+    Route::post("/destroy/{id}", [HousesController::class, 'destroy']);
+});
+Route::prefix('housesbooking')->group(function () {
+    Route::get("/index", [HousesBookingController::class, 'index']);
+    Route::get("/show/{id}", [HousesBookingController::class, 'show']);
+    Route::post("/store", [HousesBookingController::class, 'store']);
+    Route::post("/update/{id}", [HousesBookingController::class, 'update']);
+    Route::post("/destroy/{id}", [HousesBookingController::class, 'destroy']);
+
+});
+Route::prefix('user')->group(function () {
+    Route::get('/index', [UserController::class, 'index']);
+    Route::get('/show/{id}', [UserController::class, 'show']);
+    Route::post('/create', [UserController::class, 'create']);
+    Route::post('/update/{id}', [UserController::class, 'update']);
+    Route::post('/destroy/{id}', [UserController::class, 'destroy']);
+});
+
+Route::prefix('user')->group(function(){
+   Route::get('/index',[UserController::class,'index']);
+   Route::get('/show/{id}',[UserController::class,'show']);
+   Route::post('/create',[UserController::class,'create']);
+   Route::post('/update/{id}',[UserController::class,'update']);
+   Route::post('/destroy/{id}',[UserController::class,'destroy']);
+});
