@@ -139,7 +139,7 @@ class RentalController extends Controller
 // الأدمن: كل الطلبات
     public function allRentals()
     {
-        if (auth()->user()->role !== 'admin') {
+        if (auth()->user()->user_type !== 'admin') {
             return response()->json(['message'=>'Unauthorized'],403);
         }
 

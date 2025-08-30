@@ -8,6 +8,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('hotels', HotelController::class);
-Route::resources('bookings' ,BookingController::class);
 Route::post('/check-availability',[BookingController::class,'checkAvailability'])->name('check.availbility');
