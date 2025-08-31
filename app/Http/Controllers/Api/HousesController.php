@@ -119,6 +119,7 @@ class HousesController extends Controller
 
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -179,4 +180,26 @@ class HousesController extends Controller
             'message' => 'تم حذف المنزل بنجاح'
         ], 200);
     }
+    
+   public function search(Request $request)
+{
+    $request->validate([
+        'title' => 'nullable|string|max:255',
+        'location' => 'nullable|string|max:255',
+    ]);
+
+    $query = Houses::query();
+
+    if ($request->filled('title')) {
+        $query->where('title', 'like', '%' . $request->title . '%');
+    }
+
+    if ($request->filled('location')) {
+        $query->where('location', 'like', '%' . $request->location . '%');
+    }
+
+    $houses = $query->get();
+
+    return response()->json($houses);
+}
 }
