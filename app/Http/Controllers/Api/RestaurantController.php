@@ -99,12 +99,12 @@ class RestaurantController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($restaurant->images as $oldImage) {
-                    Storage::disk('public')->delete($oldImage->filename);
+                    Storage::disk('public')->delete("Restaurant/" . $oldImage->filename);
                     $oldImage->delete();
                 }
 
                 foreach ($request->file('images') as $photo) {
-                    $this->verifyAndStoreImageForeach($photo, 'Restaurant', 'public', $restaurant->id, Restaurant::class);
+                    $this->verifyAndStoreImageForeach($photo, 'Restaurant', 'public', $id, Restaurant::class);
                 }
             }
 

@@ -32,14 +32,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('/users', [UserController::class, 'store']);
-Route::get('/flights', [FlightController::class, 'index']);
-Route::post('/flights', [FlightController::class, 'store']);
-Route::post('/bookings', [FlightBookingController::class, 'store']);
-Route::post('/flights/search-week', [FlightController::class, 'searchFlightsWithinWeek']);
-Route::get('/accommodations/search', [AccommodationController::class, 'searchAccommodations']);
-Route::post('/accommodations/book', [AccommodationController::class, 'bookAccommodation']);
-Route::get('/accommodations', [AccommodationController::class, 'index']);
-Route::get('/vehicles/search', [VehicleController::class, 'search']);
+//Route::get('/flights', [FlightController::class, 'index']);
+//Route::post('/flights', [FlightController::class, 'store']);
+//Route::post('/bookings', [FlightBookingController::class, 'store']);
+//Route::post('/flights/search-week', [FlightController::class, 'searchFlightsWithinWeek']);
+// Route::get('/accommodations/search', [AccommodationController::class, 'searchAccommodations']); //
+// Route::post('/accommodations/book', [AccommodationController::class, 'bookAccommodation']); //
+// Route::get('/accommodations', [AccommodationController::class, 'index']); //
+// Route::get('/vehicles/search', [VehicleController::class, 'search']);
 
 
 // with API :
@@ -50,9 +50,6 @@ Route::post('/temp-booking', [FlightBookingController::class, 'store']);
 //
 Route::post('bookings/{id}/confirm', [FlightBookingController::class, 'confirm']);
 Route::post('bookings/{id}/cancel', [FlightBookingController::class, 'cancel']);
-
-
-
 
 // 🏨 Hotels Routes
 Route::prefix('hotels')->controller(HotelController::class)->group(function () {

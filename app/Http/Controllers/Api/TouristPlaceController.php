@@ -95,7 +95,7 @@ class TouristPlaceController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($place->images as $oldImage) {
-                Storage::disk('public')->delete($oldImage->filename);
+                Storage::disk('public')->delete("TouristPlaces/" . $oldImage->filename);
                 $oldImage->delete();
             }
 

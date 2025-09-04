@@ -114,17 +114,14 @@ class HotelController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($hotel->images as $oldImage) {
-                    Storage::disk('public')->delete($oldImage->filename);
+                    Storage::disk('public')->delete("Hotel/"  . $oldImage->filename);
                     $oldImage->delete();
                 }
                 foreach ($request->file('images') as $photo) {
                     $this->verifyAndStoreImageForeach($photo, 'Hotel', 'public', $id, Hotel::class);
                 }
             }
-
-
             DB::commit();
-
             return $this->apiResponse(new HotelResource($hotel->fresh('images', 'city')));
         } catch (\Exception $e) {
             DB::rollBack();

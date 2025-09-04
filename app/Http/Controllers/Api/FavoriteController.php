@@ -43,7 +43,7 @@ class FavoriteController extends Controller
             return response()->json(['message' => 'Removed from favorites']);
         } else {
             $user->favorites()->create([
-                'favoritable_type' => $request->favoritable_type,
+                'favoritable_type' => 'App\\Models\\' . trim($request->favoritable_type),
                 'favoritable_id' => $request->favoritable_id,
             ]);
             return response()->json(['message' => 'Added to favorites']);
@@ -51,7 +51,7 @@ class FavoriteController extends Controller
     }
 }
 
-// Auth : 
+// Auth :
 //  public function index()
 //     {
 //         $favorites = Auth::user()->favorites()->with('favoritable')->get();
